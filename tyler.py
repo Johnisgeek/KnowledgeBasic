@@ -54,3 +54,52 @@ class auto(object):
 at = auto()
 at.creation()
 at.connection()
+
+///
+pi@raspberrypi:~ $ sudo python tyler.py
+Welcome. Lets Automate!
+We will now start tasks...
+opening tyler.csv...
+[['192.168.2.108', 'pi', 'raspberry', 'ls', 'tyler.csv']]
+<type 'numpy.ndarray'>
+[['192.168.2.108' 'pi' 'raspberry' 'ls' 'tyler.csv']]
+192.168.2.108
+Opening SSH Connection to tyler.csv Definitions...
+bootlog
+bootlog.save
+camera
+check.txt
+Desktop
+Documents
+Downloads
+edit.py
+ftp
+get-pip.py
+LCD-show
+main.py
+matchbox-keyboard
+Music
+nltk_data
+paramikoNeeds
+phantom.log
+phantomLog.save
+phantomLog.save.1
+Photos
+Pictures
+Public
+python_games
+results.csv
+resultsJson.txt
+results.txt
+song.mp4
+Templates
+tyler.csv
+tyler.py
+tyler.py.save
+tyler.py.save.1
+Videos
+xinput-calibrator.deb
+Completed!
+Closing Connection
+Enjoy your day
+///

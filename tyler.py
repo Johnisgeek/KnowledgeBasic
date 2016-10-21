@@ -46,9 +46,9 @@ class auto(object):
             self.X = (line.strip())
             self.info.append(self.X)
             print(self.X)
+            self.ssh.close()
             print('Completed!')
             print('Closing Connection')
-            self.ssh.close()
             print('Enjoy your day')
 
 

@@ -1,4 +1,3 @@
-
 __author__ = 'jadams'
 
 import numpy as np
@@ -47,9 +46,9 @@ class auto(object):
             self.info.append(self.X)
             print(self.X)
             self.ssh.close()
-            print('Completed!')
-            print('Closing Connection')
-            print('Enjoy your day')
+        print('Completed!')
+        print('Closing Connection')
+        print('Enjoy your day')
 
 
 at = auto()

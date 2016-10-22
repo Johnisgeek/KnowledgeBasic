@@ -12,14 +12,21 @@ import shutil
 import cgi
 
 
+
+class KnowledgeBaseArticles(object):
+    def __init__(self):
+        self.KnowledgeBasic = {'kb0':'This Knowledge Base Article verifies if ConfD process has died.  Technician'
+                               'will need to access root and fsck all partitions', 'processWatch':'Process Watch has'
+                               'found dead processes.'}
+
 class crunchText(object):
     fileDef = 'none'
 
     def __init__(self):
-        self.file = raw_input()
         self.accountDir = '/'
         self.uploadDir = self.accountDir
-        print('Welcome to KnowledgeBasic! \nWe will now analyze bootlog...')
+        print('Welcome to KnowledgeBasic! \nPlease Press Enter to Proceed...')
+        self.currentCount = 1
 
     def processWatch(self):
         print('Check File for Process Death')
@@ -50,6 +57,7 @@ class crunchText(object):
     def kb0(self):
         print('Check File against KnowlegeBasic')
         print('Please Input Filename')
+        self.file = raw_input()
         self.log = open(self.file, 'r')
         self.logRaw = self.log.read()
         self.logs = self.logRaw.splitlines()
@@ -80,7 +88,7 @@ class crunchText(object):
         self.file = raw_input()
         print('Please Print Directory Path')
         self.uploadDir = raw_input()
-        self.save_uploaded_file(self.file, self.uploadDir)
+        self.uploadFile= self.uploadFile(self.file, self.uploadDir)
         self.form = cgi.FieldStorage()
         if not self.form.has_key(self.file):
             return
@@ -93,21 +101,54 @@ class crunchText(object):
 
     def define(self):
         print('Define New Knowledge Basic Article')
+        print('Please define article summary')
+        self.countString = str(self.currentCount)
+        createKBA = 'KB'+ self.countString
+        self.createKBA = createKBA
+        print(self.createKBA)
+        self.summary = raw_input()
+        print(self.summary)
+        self.BasicAppend = kba.KnowledgeBasic
+        print('Is All Information Correct?  y/n please!')
+        self.verification = raw_input()
+        if self.verification == 'y':
+            self.BasicAppend.update({ct.createKBA:ct.summary})
+            self.results = kba.KnowledgeBasic
+            print(self.results)
+            print('done')
+
+        print('New Definition Completed')
+        self.currentCount= self.currentCount + 1
+        print('Next KBA Entry'+ self.currentCount)
+        
 
 
     def prompt(self):
-        print('Menu:  u = Upload  a = Analyze d = Define  q = Quit')
+        print('Menu:  u = Upload  a = Analyze d = Define  p = Print KBAs')
         self.option = raw_input()
         while self.option != 'q':
             if self.option == 'a':
                 self.kb0()
-                print('Completed... Heading back to menu')
+                print('Completed... Heading Back to Menu')
+                break
             elif self.option == 'u':
                 self.upload()
+                print('Completed... Heading Back to Menu')
+                break
             elif self.option == 'd':
                 self.define()
-            break
+                print('Completed... Heading Back to Menu')
+                break
+            elif self.option == 'p':
+                print(kba.KnowledgeBasic)
+                break
+
+
 
 
 ct = crunchText()
-ct.prompt()
+kba = KnowledgeBaseArticles()
+
+a=1
+while a == a :
+    ct.prompt()

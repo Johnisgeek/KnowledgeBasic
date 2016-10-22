@@ -8,13 +8,17 @@ import codecs
 import collections
 import csv
 from nltk.compat import raw_input
+import shutil
+import cgi
 
 
 class crunchText(object):
     fileDef = 'none'
 
     def __init__(self):
-        
+        self.file = raw_input()
+        self.accountDir = '/'
+        self.uploadDir = self.accountDir
         print('Welcome to KnowledgeBasic! \nWe will now analyze bootlog...')
 
     def processWatch(self):
@@ -46,7 +50,6 @@ class crunchText(object):
     def kb0(self):
         print('Check File against KnowlegeBasic')
         print('Please Input Filename')
-        self.file = raw_input()
         self.log = open(self.file, 'r')
         self.logRaw = self.log.read()
         self.logs = self.logRaw.splitlines()
@@ -73,6 +76,20 @@ class crunchText(object):
 
     def upload(self):
         print('Upload Log file to KnowledgeBasic Server')
+        print('Please Print File Name')
+        self.file = raw_input()
+        print('Please Print Directory Path')
+        self.uploadDir = raw_input()
+        self.save_uploaded_file(self.file, self.uploadDir)
+        self.form = cgi.FieldStorage()
+        if not self.form.has_key(self.file):
+            return
+        self.fileitem = self.form[self.file]
+        if not self.fileitem.file:
+            return
+        self.outpath = os.path.join(self.uploadDir, self.fileitem.filename)
+        with open(self.outpath, 'wb') as fout:
+            shutil.copyfileobj(self.fileitem.file, fout, 100000)
 
     def define(self):
         print('Define New Knowledge Basic Article')
@@ -94,4 +111,3 @@ class crunchText(object):
 
 ct = crunchText()
 ct.prompt()
-ct.kb0()

@@ -15,6 +15,8 @@ import cgi
 
 class KnowledgeBaseArticles(object):
     def __init__(self):
+        self.sigLineList = []
+        self.significantLines = {'kb0': ['xlicense: ERROR! ERR_STATE_ERR(-18)Confd not running']}
         self.KnowledgeBasic = {'kb0':'This Knowledge Base Article verifies if ConfD process has died.  Technician'
                                'will need to access root and fsck all partitions', 'processWatch':'Process Watch has'
                                'found dead processes.'}
@@ -105,26 +107,48 @@ class crunchText(object):
         self.countString = str(self.currentCount)
         createKBA = 'KB'+ self.countString
         self.createKBA = createKBA
-        print(self.createKBA)
         self.summary = raw_input()
-        print(self.summary)
         self.BasicAppend = kba.KnowledgeBasic
         print('Is All Information Correct?  y/n please!')
         self.verification = raw_input()
         if self.verification == 'y':
-            self.BasicAppend.update({ct.createKBA:ct.summary})
+            self.BasicAppend.update({ct.createKBA: ct.summary})
             self.results = kba.KnowledgeBasic
-            print(self.results)
-            print('done')
+            print('Done')
+        print('Define KBA Significant Lines')
+        self.siglines = []
+        self.siglines = raw_input()
+        self.linesAppend = kba.significantLines
+        print('Is this Correct?   y/n: ')
+        self.verification2 = raw_input()
+        if self.verification2 == 'y':
+            self.linesAppend.update({ct.createKBA: ct.siglines})
+            self.results2 = kba.significantLines
+            print('Done')
+        print('More Significant Lines?')
+        self.verification3 = raw_input()
+        while self.verification3 == 'y':
+            self.sigLines2 = raw_input()
+            self.listLines = []
+            self.listLines.append(self.sigLines2)
+            self.linesAppend = kba.significantLines
+            library = self.linesAppend
+            library[ct.createKBA].append(ct.sigLines2)
+            print('More Lines?')
+            self.verification3 = raw_input()
+
+
+
+
 
         print('New Definition Completed')
         self.currentCount= self.currentCount + 1
-        print('Next KBA Entry'+ self.currentCount)
-        
+        print('Next KBA Entry'+ str(self.currentCount))
+
 
 
     def prompt(self):
-        print('Menu:  u = Upload  a = Analyze d = Define  p = Print KBAs')
+        print('Menu:  u = Upload  a = Analyze d = Define  p = Print KBAs/SigLineRef')
         self.option = raw_input()
         while self.option != 'q':
             if self.option == 'a':
@@ -141,6 +165,7 @@ class crunchText(object):
                 break
             elif self.option == 'p':
                 print(kba.KnowledgeBasic)
+                print(kba.significantLines)
                 break
 
 

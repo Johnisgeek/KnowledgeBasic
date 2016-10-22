@@ -111,23 +111,27 @@ class crunchText(object):
         self.BasicAppend = kba.KnowledgeBasic
         print('Is All Information Correct?  y/n please!')
         self.verification = raw_input()
-        if self.verification == 'y':
-            self.BasicAppend.update({ct.createKBA: ct.summary})
-            self.results = kba.KnowledgeBasic
-            print('Done')
+        self.BasicAppend.update({ct.createKBA: ct.summary})
+        self.results = kba.KnowledgeBasic
+        print('Done')
         print("Define KBA Significant Lines: Separate lines by ',' :")
         self.siglines = []
         self.siglines = raw_input()
         self.linesAppend = kba.significantLines
-        print('Is this Correct?   y/n: ')
         self.verification2 = raw_input()
-        if self.verification2 == 'y':
-            self.linesAppend.update({ct.createKBA: ct.siglines})
-            self.results2 = kba.significantLines
-            print('Done')
+        self.linesAppend.update({ct.createKBA: ct.siglines})
+        self.results2 = kba.significantLines
+        print('Done')
+
+
+
+
+
+
         print('New Definition Completed')
         self.currentCount= self.currentCount + 1
         print('Next KBA Entry'+ str(self.currentCount))
+
 
 
     def prompt(self):
@@ -150,6 +154,9 @@ class crunchText(object):
                 print(kba.KnowledgeBasic)
                 print(kba.significantLines)
                 break
+
+
+
 
 ct = crunchText()
 kba = KnowledgeBaseArticles()

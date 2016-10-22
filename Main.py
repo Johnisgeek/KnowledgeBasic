@@ -14,7 +14,7 @@ class crunchText(object):
     fileDef = 'none'
 
     def __init__(self):
-        self.file = raw_input()
+        
         print('Welcome to KnowledgeBasic! \nWe will now analyze bootlog...')
 
     def processWatch(self):
@@ -46,6 +46,7 @@ class crunchText(object):
     def kb0(self):
         print('Check File against KnowlegeBasic')
         print('Please Input Filename')
+        self.file = raw_input()
         self.log = open(self.file, 'r')
         self.logRaw = self.log.read()
         self.logs = self.logRaw.splitlines()

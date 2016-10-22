@@ -115,7 +115,7 @@ class crunchText(object):
             self.BasicAppend.update({ct.createKBA: ct.summary})
             self.results = kba.KnowledgeBasic
             print('Done')
-        print('Define KBA Significant Lines')
+        print("Define KBA Significant Lines: Separate lines by ',' :")
         self.siglines = []
         self.siglines = raw_input()
         self.linesAppend = kba.significantLines
@@ -125,26 +125,9 @@ class crunchText(object):
             self.linesAppend.update({ct.createKBA: ct.siglines})
             self.results2 = kba.significantLines
             print('Done')
-        print('More Significant Lines?')
-        self.verification3 = raw_input()
-        while self.verification3 == 'y':
-            self.sigLines2 = raw_input()
-            self.listLines = []
-            self.listLines.append(self.sigLines2)
-            self.linesAppend = kba.significantLines
-            library = self.linesAppend
-            library[ct.createKBA].append(ct.sigLines2)
-            print('More Lines?')
-            self.verification3 = raw_input()
-
-
-
-
-
         print('New Definition Completed')
         self.currentCount= self.currentCount + 1
         print('Next KBA Entry'+ str(self.currentCount))
-
 
 
     def prompt(self):
@@ -167,9 +150,6 @@ class crunchText(object):
                 print(kba.KnowledgeBasic)
                 print(kba.significantLines)
                 break
-
-
-
 
 ct = crunchText()
 kba = KnowledgeBaseArticles()

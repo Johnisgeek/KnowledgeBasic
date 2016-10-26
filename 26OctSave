@@ -1,0 +1,149 @@
+_author__ = 'JohnAdams'
+
+import itertools
+import os
+import re
+import unicodedata
+import codecs
+import collections
+import csv
+import shutil
+import cgi
+
+
+import os 
+dir_path = os.path.dirname(os.path.realpath(__file__))
+
+
+class KnowledgeBaseArticles(object):
+    def __init__(self):
+        self.sigLineList = []
+        self.siglinesFound = []
+        self.book = {'kb0': ['xactiond: <INFO> Calling ...','lines','morelines'], 'kb1':['capture.sh: Captured on'],'ProcessWatch':['Stopping xhad...', 'Stopping xactiond', 'Stopping xconfigd...']}
+        self.check = 'xactiond: <INFO> Calling ...'
+        self.KnowledgeBasic = {'kb0':'This Knowledge Base Article verifies if ConfD process has died.  Technician'
+                               'will need to access root and fsck all partitions', 'processWatch':'Process Watch has'
+                               'found dead processes.'}
+    def prepKBA(self):
+        library = self.book
+        for item in library.keys():
+            self.check = (library.values())
+        type(self.check)
+        self.merged = list(itertools.chain.from_iterable(self.check))
+        print(self.merged)
+
+
+class crunchText(object):
+    kba = KnowledgeBaseArticles()
+    fileDef = 'none'
+    def __init__(self):
+        self.accountDir = '/'
+        self.uploadDir = self.accountDir
+        print('Welcome to KnowledgeBasic! \nPlease Press Enter to Proceed...')
+        self.currentCount = 1
+
+
+    def analyzer(self):
+        def search(linelist, logfile):
+                for line in linelist:
+                    for log in logfile:
+                        if set(line) & set(log):
+                            kba.siglinesFound = line
+                return None
+        kba.prepKBA()
+        print('Check File against KnowlegeBasic')
+        print('Please Input Filename')
+        self.file = raw_input()
+        self.log = open(self.file, 'r')
+        self.logRaw = self.log.read()
+        self.logs = self.logRaw.splitlines()
+        search(kba.merged, self.logs)
+        print(kba.merged)
+        print('checking against above items... below items found:')
+        print(kba.siglinesFound)
+
+
+    def upload(self):
+        print('Upload Log file to KnowledgeBasic Server')
+        print('Please Print File Name')
+        self.file = raw_input()
+        print('Please Print Directory Path')
+        self.uploadDir = raw_input()
+        self.uploadFile= self.uploadFile(self.file, self.uploadDir)
+        self.form = cgi.FieldStorage()
+        if not self.form.has_key(self.file):
+            return
+        self.fileitem = self.form[self.file]
+        if not self.fileitem.file:
+            return
+        self.outpath = os.path.join(self.uploadDir, self.fileitem.filename)
+        with open(self.outpath, 'wb') as fout:
+            shutil.copyfileobj(self.fileitem.file, fout, 100000)
+
+    def define(self):
+        print('Define New Knowledge Basic Article')
+        print('Please define article summary')
+        self.countString = str(self.currentCount)
+        createKBA = 'KB'+ self.countString
+        self.createKBA = createKBA
+        self.summary = raw_input()
+        self.BasicAppend = kba.KnowledgeBasic
+        self.BasicAppend.update({ct.createKBA: ct.summary})
+        self.results = kba.KnowledgeBasic
+        print('Done')
+        print("Define KBA Significant Lines: Separate lines by ',' :")
+        self.siglines = []
+        self.siglines = raw_input()
+        self.linesAppend = kba.book
+        self.linesAppend.update({ct.createKBA: ct.siglines})
+        print('Done')
+        print('New Definition Completed')
+        self.currentCount= self.currentCount + 1
+        print('Next KBA Entry'+ str(self.currentCount))
+
+
+
+    def prompt(self):
+        print('Menu:  u = Upload  a = Analyze d = Define  p = Print KBAs/SigLineRef')
+        self.option = raw_input()
+        while self.option != 'q':
+            if self.option == 'a':
+                self.analyzer()
+                print('Completed... Heading Back to Menu')
+                break
+            elif self.option == 'u':
+                self.upload()
+                print('Completed... Heading Back to Menu')
+                break
+            elif self.option == 'd':
+                self.define()
+                print('Completed... Heading Back to Menu')
+                break
+            elif self.option == 'p':
+                kba.prepKBA()
+                print(kba.check)
+                break
+
+
+
+
+ct = crunchText()
+kba = KnowledgeBaseArticles()
+
+a=1
+while a == a :
+    ct.prompt()
+
+
+
+# for item in self.countKB:
+#        resultsString = open('results.txt', 'w')
+#        resultsString.write(self.prep)
+#        resultsFile = open('results.csv', 'w')
+#        wr = csv.writer(resultsFile, delimiter=' ', lineterminator='\n')
+#        wr.writerows(self.results)
+
+
+#def searchBoook(library):
+#    for key in library:
+#       print library[key]

@@ -47,8 +47,8 @@ class crunchText(object):
         def search(linelist, logfile):
                 for line in linelist:
                     for log in logfile:
-                        if set(line) & set(log):
-                            kba.siglinesFound = line
+                        if line in log:
+                            kba.siglinesFound.append(line)
                 return None
         kba.prepKBA()
         print('Check File against KnowlegeBasic')
@@ -58,27 +58,9 @@ class crunchText(object):
         self.logRaw = self.log.read()
         self.logs = self.logRaw.splitlines()
         search(kba.merged, self.logs)
-        print(kba.merged)
-        print('checking against above items... below items found:')
         print(kba.siglinesFound)
 
 
-    def upload(self):
-        print('Upload Log file to KnowledgeBasic Server')
-        print('Please Print File Name')
-        self.file = raw_input()
-        print('Please Print Directory Path')
-        self.uploadDir = raw_input()
-        self.uploadFile= self.uploadFile(self.file, self.uploadDir)
-        self.form = cgi.FieldStorage()
-        if not self.form.has_key(self.file):
-            return
-        self.fileitem = self.form[self.file]
-        if not self.fileitem.file:
-            return
-        self.outpath = os.path.join(self.uploadDir, self.fileitem.filename)
-        with open(self.outpath, 'wb') as fout:
-            shutil.copyfileobj(self.fileitem.file, fout, 100000)
 
     def define(self):
         print('Define New Knowledge Basic Article')
@@ -92,8 +74,7 @@ class crunchText(object):
         self.results = kba.KnowledgeBasic
         print('Done')
         print("Define KBA Significant Lines: Separate lines by ',' :")
-        self.siglines = []
-        self.siglines = raw_input()
+        self.siglines = [raw_input()]
         self.linesAppend = kba.book
         self.linesAppend.update({ct.createKBA: ct.siglines})
         print('Done')
@@ -104,15 +85,11 @@ class crunchText(object):
 
 
     def prompt(self):
-        print('Menu:  u = Upload  a = Analyze d = Define  p = Print KBAs/SigLineRef')
+        print('Menu:  u = upload(RemovedForNow!!!)  a = Analyze d = Define  p = Print KBAs/SigLineRef')
         self.option = raw_input()
         while self.option != 'q':
             if self.option == 'a':
                 self.analyzer()
-                print('Completed... Heading Back to Menu')
-                break
-            elif self.option == 'u':
-                self.upload()
                 print('Completed... Heading Back to Menu')
                 break
             elif self.option == 'd':

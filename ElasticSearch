@@ -1,0 +1,14 @@
+from elasticsearch import Elasticsearch, RequestsHttpConnection
+
+es = Elasticsearch(
+['https://037e7a521c4a072d236255b40b3cfdaf.us-east-1.aws.found.io:9243'],
+connection_class=RequestsHttpConnection,
+http_auth=('elastic', 'tf42RJcRyyVZrZT1HsOcV2Q2'),
+use_ssl=True,
+verify_certs=False)
+es.info()
+
+
+
+##Search function
+es.search(index="filebeat-*", body={"query" : {"match_phrase":{"message": "xconfigd"}}})

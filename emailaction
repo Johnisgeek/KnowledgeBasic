@@ -1,0 +1,45 @@
+import imaplib
+from email.parser import Parser
+import email
+
+url = 'outlook.office365.com'
+conn = imaplib.IMAP4_SSL(url,993)
+user,password = ('jadams@ixiacom.com','Waran.Zed.1985')
+conn.login(user,password)
+conn.select('INBOX')
+results,data = conn.search(None,'(HEADER Subject "Notification")')
+msg_ids = data[0]
+msg_id_list = msg_ids.split()
+p = Parser()
+
+def process_multipart_message(message):
+    rtn = ''
+    if message.is_multipart():
+        for m in message.get_payload():
+            rtn += process_multipart_message(m)
+    else:
+        rtn += message.get_payload()
+    return rtn
+
+
+print('Connected')
+print('\n ID List \n')
+print(len(msg_id_list))
+counter = 0
+
+for item in msg_id_list[:15]:
+    result,data = conn.fetch(item,"(RFC822)")
+    emailz = data[0][1]
+    text = p.parsestr(emailz)
+    content = process_multipart_message(text)
+    if 'email ' in content:
+        print('true')
+    else:
+        print('false')
+
+
+
+latest_email_id = msg_id_list[-1]
+result,data = conn.fetch(latest_email_id,"(RFC822)")
+raw_email = data[0][1]
+

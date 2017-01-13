@@ -1,0 +1,53 @@
+__author__ = 'Admin'
+import os.path
+import sys
+import json
+try:
+    import apiai
+except ImportError:
+    sys.path.append(
+        os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir)
+    )
+    import apiai
+CLIENT_ACCESS_TOKEN = '417edcd805e14a6cb4e2158d556b5d04'
+def main():
+        ai = apiai.ApiAI(CLIENT_ACCESS_TOKEN)
+        while True:
+            request = ai.text_request()
+            request.lang = 'en'
+            # request.session_id = "<SESSION ID, UBIQUE FOR EACH USER>"
+            print("\n\nYour Input : ",end=" ")
+            request.query = input()
+            print("\n\nBot\'s response :",end=" ")
+            response = request.getresponse()
+            responsestr = response.read().decode('utf-8')
+            response_obj = json.loads(responsestr)
+            print(response_obj["result"]["fulfillment"]["speech"])
+            print('\n Action Requested: ')
+            print(response_obj["result"]["action"])
+            action = str(response_obj["result"]["action"])
+
+            if action is not None:
+                 if action == "send_message":
+                    parameters = response_obj['parameters']
+
+                    text = parameters.get('text')
+                    message_type = parameters.get('message_type')
+                    parent = parameters.get('parent')
+
+                    print (
+                        'text: %s, message_type: %s, parent: %s' %
+                        (
+                            text if text else "null",
+                            message_type if message_type else "null",
+                            parent if parent else "null"
+                        )
+                    )
+
+                    if not actionIncomplete:
+                        print(u"...Sending Message...")
+                        break
+
+
+if __name__ == '__main__':
+    main()

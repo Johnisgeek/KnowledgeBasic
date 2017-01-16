@@ -1,0 +1,8 @@
+import beatbox
+service = beatbox.PythonClient()  # instantiate the object
+user = 'jadams@ixiacom.com'
+passwd = 'waranzed87cjT0tYZqmhxfwqVWt3ncgKo8'
+service.login(user, passwd)  # login using your sf credentials
+query_result = service.query("SELECT Id, Owner.Name FROM Case WHERE Owner.Name = 'John Adams'")
+records = query_result['records']  # dictionary of results!
+print(records)
